@@ -1,0 +1,252 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Deep Network Interpolation for Continuous Imagery Effect Transition</title>
+  <!--=================Meta tags==========================-->
+  <meta name="robots" content="index,follow">
+  <meta name="description"
+    content="Deep convolutional neural network has demonstrated its capability of learning a deterministic mapping for the desired imagery effect. However, the large variety of user flavors motivates the possibility of continuous transition among different output effects. Unlike existing methods that require a specific design to achieve one particular transition (e.g., style transfer), we propose a simple yet universal approach to attain a smooth control of diverse imagery effects in many low-level vision tasks, including image restoration, image-to-image translation, and style transfer. Specifically, our method, namely Deep Network Interpolation (DNI), applies linear interpolation in the parameter space of two or more correlated networks. A smooth control of imagery effects can be achieved by tweaking the interpolation coefficients. In addition to DNI and its broad applications, we also investigate the mechanism of network interpolation from the perspective of learned filters.">
+  <meta name="keywords" content="interpolation, super resolution, style transfer, cyclegan">
+  <link rel="author" href="https://xinntao.github.io/projects/DNI">
+  <!--=================js==========================-->
+  <link href="./css.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" type="text/css" href="./project.css" media="screen">
+  <script src="./effect.js "></script>
+  <!-- Latex -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+        TeX: { equationNumbers: { autoNumber: "AMS" } },
+      });
+      </script>
+  <script type="text/javascript" async
+    src="js/MathJax.js">
+  </script>
+  <!--=================Google Analytics==========================-->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-129775907-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129775907-1');
+  </script>
+</head>
+
+<style type="text/css">
+  .tg  {border-collapse:collapse;border-spacing:0;}
+  .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+    overflow:hidden;padding:10px 5px;word-break:normal;}
+  .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+    font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+  .tg .tg-cly1{text-align:left;vertical-align:middle}
+  .tg .tg-fp3b{border-color:#000000;font-weight:bold;text-align:left;vertical-align:middle}
+  .tg .tg-yla0{font-weight:bold;text-align:left;vertical-align:middle}
+  </style>
+
+<body>
+  <div id="content">
+    <div id="content-inner">
+      <div class="section head">
+        <h1>
+          NTIRE 2023: <font color="Tomato">360</font>° <font color="Tomato">S</font>uper-<font color="Tomato">R</font>esolution  <font color="Tomato">C</font>hallenge
+        </h1>
+        
+        <!--=================Authors==========================-->
+        <!-- <div class="authors">
+          <a href="https://xinntao.github.io/" target="_blank">Xintao Wang</a> <sup>1</sup> &nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="https://yuke93.github.io/" target="_blank">Ke Yu</a> <sup>1</sup> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href=" https://scholar.google.com.hk/citations?user=OSDCB0UAAAAJ" target="_blank">Chao Dong</a>
+          <sup>2</sup> &nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="https://scholar.google.com/citations?user=qpBtpGsAAAAJ" target="_blank">Xiaoou Tang</a> <sup>1</sup>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="http://personal.ie.cuhk.edu.hk/~ccloy/" target="_blank">Chen Change Loy</a> <sup>3</sup>
+        </div> 
+
+        <div class="affiliations ">
+          <sup>1</sup> <a href="http://mmlab.ie.cuhk.edu.hk/" target="_blank">CUHK - SenseTime Joint Lab, The Chinese
+            University of Hong Kong</a> <br>
+          <sup>2</sup> Shenzhen Institutes of Advanced Technology, Chinese Academy of Sciences<br>
+          <sup>3</sup> Nanyang Technological University, Singapore
+        </div>-->
+        <!--=================Tabs==========================-->
+        <ul id="tabs">
+          <li><a href="#Flickr360" name="#tab2">Flickr360</a></li>
+          <li><a href="#ODV360" name="#tab3">ODV360</a></li>
+      </div>
+      <br>
+      <!--=================Abstract==========================-->
+      <div class="section abstract">
+        <center>
+          <div class="rightView">
+              <img class="small" src="./src/mark.png">
+          </div> 
+          </center>
+        <h2>Abstract</h2>
+        <br>
+        <p>
+          The 360° or omnidirectional images/videos can provide an immersive and interactive experience and have received 
+          much research attention with the popularity of AR/VR applications. Unlike planar images/videos that have a narrow 
+          field of view (FoV), 360° images/videos can represent the whole scene in all directions. However, 360° images/videos 
+          suffer from the lower angular resolution problem since they are captured by fisheye lens with the same sensor size 
+          for capturing planar images. Although the whole 360° images/videos are of high resolution, the details are not 
+          satisfying. In many application scenarios, increasing the resolution of 360° images/videos is highly demanded 
+          to achieve higher perceptual quality and boost the performance of downstream tasks.
+        </p>
+        <p>
+          Recently, considerable success has been achieved in the image and video super-resolution (SR) task with the 
+          development of deep learning-based methods. Although 360° images/videos are often transformed into 2D planar 
+          representations by preserving omnidirectional information in practice, like equirectangular projection (ERP) 
+          and cube map projection (CMP), existing super-resolution methods still cannot be directly applied to 360° 
+          images/videos due to the distortions introduced by the projections. As for videos, the temporal relationships 
+          in a 360° video should be further considered since it is different from that in an ordinary 2D video. 
+          Therefore, how to effectively super-resolve 360° image/video by considering these characteristics remains challenging.
+        </p>
+        <p>
+          To rectify the lack of high-quality datasets in the community of omnidirectional image/video super-resolution, we construct new 360° datasets for image (<a href="#Flickr360">Flickr360</a>) and video (<a href="#ODV360">ODV360</a>), respectively.  
+        </p>
+      </div>
+      <!--=================Flickr360==========================-->
+      <br>
+      <div class="section" , id="Flickr360">
+        <h2>Flickr360</h2>
+        <center>
+          <div class="rightView">
+              <img class="small" src="./src/flickr360.png", width="100%">
+          </div> 
+        </center>
+        
+        <p>
+          Flickr360 contains about 3150 ERP images with a resolution larger than 5k. Specifically, 
+          3100 images are collected from Flickr, and the other 50 images are captured by Insta360° 
+          cameras. The images from Flickr are under either Creative Commons BY 2.0, Creative Commons BY-NC 2.0, 
+          Public Domain Mark 1.0, Public Domain CC0 1.0, or U.S. Government Works license. All of these licenses 
+          allow free use, redistribution, and adaptation for non-commercial purposes. The image contents vary both 
+          indoors and outdoors. We first downsample the original images into 2k resolution (2048 x 1024), serving 
+          as HR images. These HR images are further downsampled into LR images. The data partition is shown in the 
+          following table.
+        </p>
+
+        <p>
+        <center>
+        <table class="tg">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Training</th>
+              <th>Validation</th>
+              <th>Testing</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Source</td>
+              <td>Flickr 360</td>
+              <td>Flickr 360</td>
+              <td>Flickr 360+capturing</td>
+            </tr>
+            <tr>
+              <td>Number</td>
+              <td>3000</td>
+              <td>50</td>
+              <td>50+50</td>
+            </tr>
+            <tr>
+              <td>Storage</td>
+              <td>8.1G (HR) + 553M (LR)</td>
+              <td>137M (HR) + 9.3M (LR)</td>
+              <td>271M (HR) + 20M (LR)</td>
+            </tr>
+          </tbody>
+          </table>
+        </center>
+        </p>
+
+        <h3>
+        Download
+        </h3> 
+        <p>● <a href="https://drive.google.com/drive/folders/1lDIxTahDXQ5w5x_UZySX2NOes_ZoNztN", target="_blank">Google Drive</a></p>
+        <p>● <a href="https://share.weiyun.com/6p2fsaxO", target="_blank">腾讯微云</a></p>
+        <p>See <a href="./Flickr360/test_html.html", target="_blank">here</a> for samples. </p>
+      </div>
+      <br>
+      <!--=================ODV360==========================-->
+      <div class="section" , id="ODV360">
+        <h2>ODV360</h2>
+        <center>
+          <div class="rightView">
+              <img class="small" src="./src/odv360.png", width="100%">
+          </div> 
+        </center>
+        <p>
+          ODV360 including two parts:
+        </p><p>
+          ● 90 videos collected from YouTube and public 360° video dataset
+        </p><p>
+          These videos are carefully selected and have high quality to be used for restoration. 
+          All videos have the license of Creative Commons Attribution license (reuse allowed), and our dataset is used only for academic and research proposes
+        </p><p>
+          ● 160 videos collected by ourselves with Insta360 cameras
+        </p><p>
+          The cameras we use include Insta 360 X2 and Insta 360 ONE RS. They can capture high-resolution (5.7K) omnidirectional videos.
+        </p><p>
+          These collected omnidirectional videos cover a large range of diversity, and the video contents vary indoors and outdoors. 
+          To facilitate the use of these videos for research, we downsample the original videos into 2K resolution (2160x1080) by OpenCV. 
+          The number of frames per video is fixed at about 100. We randomly divide these videos into training, validation, and testing sets, 
+          as shown in the following table.
+        </p>
+        <p>
+        <center>
+        <table class="tg">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Training</th>
+              <th>Validation</th>
+              <th>Testing</th>
+              <th>All</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Number</td>
+              <td>210</td>
+              <td>20</td>
+              <td>20</td>
+              <td>250</td>
+            </tr>
+            <tr>
+              <td>Storage</td>
+              <td>GT(59G)+LR(4.9G)</td>
+              <td>GT(5.3G)+LR(446M)</td>
+              <td>GT(5.7G)+LR(485M)</td>
+              <td>75.8G</td>
+            </tr>
+          </tbody>
+          </table>
+          </center>
+          </p>
+
+          <h3>
+            Download
+          </h3> 
+          <p>● <a href="https://drive.google.com/drive/folders/1lDIxTahDXQ5w5x_UZySX2NOes_ZoNztN", target="_blank">Google Drive</a></p>
+          <p>● <a href="https://share.weiyun.com/8zd7X0TZ", target="_blank">腾讯微云</a></p>
+          <p>See <a href="./odv360_test/test_html.html", target="_blank">here</a> for samples. </p>
+      </div>
+      <br>
+
+      <!--=================Contact==========================-->
+      <div class="section contact">
+        <h2 id="contact">Contact</h2>
+        <p>If you have any question, please contact Xintao Wang at <strong>xintao.wang@outlook.com</strong>.</p>
+      </div>
+</body>
+
+</html>
