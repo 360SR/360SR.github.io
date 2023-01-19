@@ -55,9 +55,9 @@
     <div id="content-inner">
       <div class="section head">
         <h1>
-          NTIRE 2023: <font color="Tomato">360</font>° <font color="Tomato">S</font>uper-<font color="Tomato">R</font>esolution  <font color="Tomato">C</font>hallenge
+          NTIRE 2023: <font color="Tomato">360</font>° <font color="Tomato">S</font>uper-<font color="Tomato">R</font>esolution  Challenge Dataset
         </h1>
-        
+
         <!--=================Authors==========================-->
         <!-- <div class="authors">
           <a href="https://xinntao.github.io/" target="_blank">Xintao Wang</a> <sup>1</sup> &nbsp;&nbsp;&nbsp;&nbsp;
@@ -67,7 +67,7 @@
           <a href="https://scholar.google.com/citations?user=qpBtpGsAAAAJ" target="_blank">Xiaoou Tang</a> <sup>1</sup>
           &nbsp;&nbsp;&nbsp;&nbsp;
           <a href="http://personal.ie.cuhk.edu.hk/~ccloy/" target="_blank">Chen Change Loy</a> <sup>3</sup>
-        </div> 
+        </div>
 
         <div class="affiliations ">
           <sup>1</sup> <a href="http://mmlab.ie.cuhk.edu.hk/" target="_blank">CUHK - SenseTime Joint Lab, The Chinese
@@ -85,31 +85,34 @@
       <div class="section abstract">
         <center>
           <div class="rightView">
-              <img class="small" src="./src/mark.png">
-          </div> 
+              <img class="small" src="./src/mark.png" width="400">
+          </div>
           </center>
+
+        <h3>Please see more competition information in <a href="https://github.com/360SR/360SR-Challenge", target="_blank">https://github.com/360SR/360SR-Challenge</a>.</h3>
+
         <h2>Abstract</h2>
         <br>
         <p>
-          The 360° or omnidirectional images/videos can provide an immersive and interactive experience and have received 
-          much research attention with the popularity of AR/VR applications. Unlike planar images/videos that have a narrow 
-          field of view (FoV), 360° images/videos can represent the whole scene in all directions. However, 360° images/videos 
-          suffer from the lower angular resolution problem since they are captured by fisheye lens with the same sensor size 
-          for capturing planar images. Although the whole 360° images/videos are of high resolution, the details are not 
-          satisfying. In many application scenarios, increasing the resolution of 360° images/videos is highly demanded 
+          The 360° or omnidirectional images/videos can provide an immersive and interactive experience and have received
+          much research attention with the popularity of AR/VR applications. Unlike planar images/videos that have a narrow
+          field of view (FoV), 360° images/videos can represent the whole scene in all directions. However, 360° images/videos
+          suffer from the lower angular resolution problem since they are captured by fisheye lens with the same sensor size
+          for capturing planar images. Although the whole 360° images/videos are of high resolution, the details are not
+          satisfying. In many application scenarios, increasing the resolution of 360° images/videos is highly demanded
           to achieve higher perceptual quality and boost the performance of downstream tasks.
         </p>
         <p>
-          Recently, considerable success has been achieved in the image and video super-resolution (SR) task with the 
-          development of deep learning-based methods. Although 360° images/videos are often transformed into 2D planar 
-          representations by preserving omnidirectional information in practice, like equirectangular projection (ERP) 
-          and cube map projection (CMP), existing super-resolution methods still cannot be directly applied to 360° 
-          images/videos due to the distortions introduced by the projections. As for videos, the temporal relationships 
-          in a 360° video should be further considered since it is different from that in an ordinary 2D video. 
+          Recently, considerable success has been achieved in the image and video super-resolution (SR) task with the
+          development of deep learning-based methods. Although 360° images/videos are often transformed into 2D planar
+          representations by preserving omnidirectional information in practice, like equirectangular projection (ERP)
+          and cube map projection (CMP), existing super-resolution methods still cannot be directly applied to 360°
+          images/videos due to the distortions introduced by the projections. As for videos, the temporal relationships
+          in a 360° video should be further considered since it is different from that in an ordinary 2D video.
           Therefore, how to effectively super-resolve 360° image/video by considering these characteristics remains challenging.
         </p>
         <p>
-          To rectify the lack of high-quality datasets in the community of omnidirectional image/video super-resolution, we construct new 360° datasets for image (<a href="#Flickr360">Flickr360</a>) and video (<a href="#ODV360">ODV360</a>), respectively.  
+          To rectify the lack of high-quality datasets in the community of omnidirectional image/video super-resolution, we construct new 360° datasets for image (<a href="#Flickr360">Flickr360</a>) and video (<a href="#ODV360">ODV360</a>), respectively.
         </p>
       </div>
       <!--=================Flickr360==========================-->
@@ -119,17 +122,17 @@
         <center>
           <div class="rightView">
               <img class="small" src="./src/flickr360.png", width="100%">
-          </div> 
+          </div>
         </center>
-        
+
         <p>
-          Flickr360 contains about 3150 ERP images with a resolution larger than 5k. Specifically, 
-          3100 images are collected from Flickr, and the other 50 images are captured by Insta360° 
-          cameras. The images from Flickr are under either Creative Commons BY 2.0, Creative Commons BY-NC 2.0, 
-          Public Domain Mark 1.0, Public Domain CC0 1.0, or U.S. Government Works license. All of these licenses 
-          allow free use, redistribution, and adaptation for non-commercial purposes. The image contents vary both 
-          indoors and outdoors. We first downsample the original images into 2k resolution (2048 x 1024), serving 
-          as HR images. These HR images are further downsampled into LR images. The data partition is shown in the 
+          Flickr360 contains about 3150 ERP images with a resolution larger than 5k. Specifically,
+          3100 images are collected from Flickr, and the other 50 images are captured by Insta360°
+          cameras. The images from Flickr are under either Creative Commons BY 2.0, Creative Commons BY-NC 2.0,
+          Public Domain Mark 1.0, Public Domain CC0 1.0, or U.S. Government Works license. All of these licenses
+          allow free use, redistribution, and adaptation for non-commercial purposes. The image contents vary both
+          indoors and outdoors. We first downsample the original images into 2k resolution (2048 x 1024), serving
+          as HR images. These HR images are further downsampled into LR images. The data partition is shown in the
           following table.
         </p>
 
@@ -170,9 +173,13 @@
 
         <h3>
         Download
-        </h3> 
+        </h3>
         <p>● <a href="https://drive.google.com/drive/folders/1lDIxTahDXQ5w5x_UZySX2NOes_ZoNztN", target="_blank">Google Drive</a></p>
         <p>● <a href="https://share.weiyun.com/6p2fsaxO", target="_blank">腾讯微云</a></p>
+
+        <h3>
+            Samples
+          </h3>
         <p>See <a href="./Flickr360/Flickr360.html", target="_blank">here</a> for samples. </p>
       </div>
       <br>
@@ -182,23 +189,23 @@
         <center>
           <div class="rightView">
               <img class="small" src="./src/odv360.png", width="100%">
-          </div> 
+          </div>
         </center>
         <p>
           ODV360 including two parts:
         </p><p>
           ● 90 videos collected from YouTube and public 360° video dataset
         </p><p>
-          These videos are carefully selected and have high quality to be used for restoration. 
+          These videos are carefully selected and have high quality to be used for restoration.
           All videos have the license of Creative Commons Attribution license (reuse allowed), and our dataset is used only for academic and research proposes
         </p><p>
           ● 160 videos collected by ourselves with Insta360 cameras
         </p><p>
           The cameras we use include Insta 360 X2 and Insta 360 ONE RS. They can capture high-resolution (5.7K) omnidirectional videos.
         </p><p>
-          These collected omnidirectional videos cover a large range of diversity, and the video contents vary indoors and outdoors. 
-          To facilitate the use of these videos for research, we downsample the original videos into 2K resolution (2160x1080) by OpenCV. 
-          The number of frames per video is fixed at about 100. We randomly divide these videos into training, validation, and testing sets, 
+          These collected omnidirectional videos cover a large range of diversity, and the video contents vary indoors and outdoors.
+          To facilitate the use of these videos for research, we downsample the original videos into 2K resolution (2160x1080) by OpenCV.
+          The number of frames per video is fixed at about 100. We randomly divide these videos into training, validation, and testing sets,
           as shown in the following table.
         </p>
         <p>
@@ -235,9 +242,13 @@
 
           <h3>
             Download
-          </h3> 
+          </h3>
           <p>● <a href="https://drive.google.com/drive/folders/1lDIxTahDXQ5w5x_UZySX2NOes_ZoNztN", target="_blank">Google Drive</a></p>
           <p>● <a href="https://share.weiyun.com/8zd7X0TZ", target="_blank">腾讯微云</a></p>
+
+          <h3>
+            Samples
+          </h3>
           <p>See <a href="./odv360_test/ODV360.html", target="_blank">here</a> for samples. </p>
       </div>
       <br>
@@ -245,7 +256,7 @@
       <!--=================Contact==========================-->
       <div class="section contact">
         <h2 id="contact">Contact</h2>
-        <p>If you have any question, please contact Xintao Wang at <strong>xintao.wang@outlook.com</strong>.</p>
+        <p>If you have any question, please open an issue in <a href="https://github.com/360SR/360SR-Challenge", target="_blank">https://github.com/360SR/360SR-Challenge</a>.</p>
       </div>
 </body>
 
